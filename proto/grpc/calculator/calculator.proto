@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package calculator;
+option go_package="github.com/ragnaok-iizi/grpc-test/service/grpc/calculator";
+
+message CalculatorReq {
+    int64 a = 1;
+    int64 b = 2;
+}
+
+message CalculatorResp {
+    int64 result = 1;
+}

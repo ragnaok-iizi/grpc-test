@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package counter;
+option go_package="github.com/ragnaok-iizi/grpc-test/service/grpc/counter";
+
+message CounterReq {
+    int64 num = 1;
+}
+
+message CounterResp {
+    int64 result = 1;
+}

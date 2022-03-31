@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package uploader;
+option go_package="github.com/ragnaok-iizi/grpc-test/service/grpc/uploader";
+
+message UploaderReq {
+    int64 num = 1;
+}
+
+message UploaderResp {
+    repeated int64 result = 1 [packed=true];
+}

@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package grpc;
+option go_package="./grpc";
+
+import "grpc/calculator/calculator.proto";
+import "grpc/counter/counter.proto";
+import "grpc/uploader/uploader.proto";
+
+service CalculatorService {
+    rpc Sum(calculator.CalculatorReq) returns (calculator.CalculatorResp) {};
+    rpc Multiply(calculator.CalculatorReq) returns (calculator.CalculatorResp) {};
+    rpc Counter(counter.CounterReq) returns (stream counter.CounterResp) {};
+    rpc Uploader(stream uploader.UploaderReq) returns (uploader.UploaderResp) {};
+}
