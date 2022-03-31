@@ -7,7 +7,7 @@ import "grpc/calculator/calculator.proto";
 import "grpc/counter/counter.proto";
 import "grpc/uploader/uploader.proto";
 
-service CalculatorService {
+service GrpcTestService {
     rpc Sum(calculator.CalculatorReq) returns (calculator.CalculatorResp) {};
     rpc Multiply(calculator.CalculatorReq) returns (calculator.CalculatorResp) {};
     rpc Counter(counter.CounterReq) returns (stream counter.CounterResp) {};

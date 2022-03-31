@@ -17,48 +17,48 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-// CalculatorServiceClient is the client API for CalculatorService service.
+// GrpcTestServiceClient is the client API for GrpcTestService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type CalculatorServiceClient interface {
+type GrpcTestServiceClient interface {
 	Sum(ctx context.Context, in *calculator.CalculatorReq, opts ...grpc.CallOption) (*calculator.CalculatorResp, error)
 	Multiply(ctx context.Context, in *calculator.CalculatorReq, opts ...grpc.CallOption) (*calculator.CalculatorResp, error)
-	Counter(ctx context.Context, in *counter.CounterReq, opts ...grpc.CallOption) (CalculatorService_CounterClient, error)
-	Uploader(ctx context.Context, opts ...grpc.CallOption) (CalculatorService_UploaderClient, error)
+	Counter(ctx context.Context, in *counter.CounterReq, opts ...grpc.CallOption) (GrpcTestService_CounterClient, error)
+	Uploader(ctx context.Context, opts ...grpc.CallOption) (GrpcTestService_UploaderClient, error)
 }
 
-type calculatorServiceClient struct {
+type grpcTestServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewCalculatorServiceClient(cc grpc.ClientConnInterface) CalculatorServiceClient {
-	return &calculatorServiceClient{cc}
+func NewGrpcTestServiceClient(cc grpc.ClientConnInterface) GrpcTestServiceClient {
+	return &grpcTestServiceClient{cc}
 }
 
-func (c *calculatorServiceClient) Sum(ctx context.Context, in *calculator.CalculatorReq, opts ...grpc.CallOption) (*calculator.CalculatorResp, error) {
+func (c *grpcTestServiceClient) Sum(ctx context.Context, in *calculator.CalculatorReq, opts ...grpc.CallOption) (*calculator.CalculatorResp, error) {
 	out := new(calculator.CalculatorResp)
-	err := c.cc.Invoke(ctx, "/grpc.CalculatorService/Sum", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/grpc.GrpcTestService/Sum", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *calculatorServiceClient) Multiply(ctx context.Context, in *calculator.CalculatorReq, opts ...grpc.CallOption) (*calculator.CalculatorResp, error) {
+func (c *grpcTestServiceClient) Multiply(ctx context.Context, in *calculator.CalculatorReq, opts ...grpc.CallOption) (*calculator.CalculatorResp, error) {
 	out := new(calculator.CalculatorResp)
-	err := c.cc.Invoke(ctx, "/grpc.CalculatorService/Multiply", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/grpc.GrpcTestService/Multiply", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *calculatorServiceClient) Counter(ctx context.Context, in *counter.CounterReq, opts ...grpc.CallOption) (CalculatorService_CounterClient, error) {
-	stream, err := c.cc.NewStream(ctx, &CalculatorService_ServiceDesc.Streams[0], "/grpc.CalculatorService/Counter", opts...)
+func (c *grpcTestServiceClient) Counter(ctx context.Context, in *counter.CounterReq, opts ...grpc.CallOption) (GrpcTestService_CounterClient, error) {
+	stream, err := c.cc.NewStream(ctx, &GrpcTestService_ServiceDesc.Streams[0], "/grpc.GrpcTestService/Counter", opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &calculatorServiceCounterClient{stream}
+	x := &grpcTestServiceCounterClient{stream}
 	if err := x.ClientStream.SendMsg(in); err != nil {
 		return nil, err
 	}
@@ -68,16 +68,16 @@ func (c *calculatorServiceClient) Counter(ctx context.Context, in *counter.Count
 	return x, nil
 }
 
-type CalculatorService_CounterClient interface {
+type GrpcTestService_CounterClient interface {
 	Recv() (*counter.CounterResp, error)
 	grpc.ClientStream
 }
 
-type calculatorServiceCounterClient struct {
+type grpcTestServiceCounterClient struct {
 	grpc.ClientStream
 }
 
-func (x *calculatorServiceCounterClient) Recv() (*counter.CounterResp, error) {
+func (x *grpcTestServiceCounterClient) Recv() (*counter.CounterResp, error) {
 	m := new(counter.CounterResp)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
@@ -85,30 +85,30 @@ func (x *calculatorServiceCounterClient) Recv() (*counter.CounterResp, error) {
 	return m, nil
 }
 
-func (c *calculatorServiceClient) Uploader(ctx context.Context, opts ...grpc.CallOption) (CalculatorService_UploaderClient, error) {
-	stream, err := c.cc.NewStream(ctx, &CalculatorService_ServiceDesc.Streams[1], "/grpc.CalculatorService/Uploader", opts...)
+func (c *grpcTestServiceClient) Uploader(ctx context.Context, opts ...grpc.CallOption) (GrpcTestService_UploaderClient, error) {
+	stream, err := c.cc.NewStream(ctx, &GrpcTestService_ServiceDesc.Streams[1], "/grpc.GrpcTestService/Uploader", opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &calculatorServiceUploaderClient{stream}
+	x := &grpcTestServiceUploaderClient{stream}
 	return x, nil
 }
 
-type CalculatorService_UploaderClient interface {
+type GrpcTestService_UploaderClient interface {
 	Send(*uploader.UploaderReq) error
 	CloseAndRecv() (*uploader.UploaderResp, error)
 	grpc.ClientStream
 }
 
-type calculatorServiceUploaderClient struct {
+type grpcTestServiceUploaderClient struct {
 	grpc.ClientStream
 }
 
-func (x *calculatorServiceUploaderClient) Send(m *uploader.UploaderReq) error {
+func (x *grpcTestServiceUploaderClient) Send(m *uploader.UploaderReq) error {
 	return x.ClientStream.SendMsg(m)
 }
 
-func (x *calculatorServiceUploaderClient) CloseAndRecv() (*uploader.UploaderResp, error) {
+func (x *grpcTestServiceUploaderClient) CloseAndRecv() (*uploader.UploaderResp, error) {
 	if err := x.ClientStream.CloseSend(); err != nil {
 		return nil, err
 	}
@@ -119,122 +119,122 @@ func (x *calculatorServiceUploaderClient) CloseAndRecv() (*uploader.UploaderResp
 	return m, nil
 }
 
-// CalculatorServiceServer is the server API for CalculatorService service.
-// All implementations must embed UnimplementedCalculatorServiceServer
+// GrpcTestServiceServer is the server API for GrpcTestService service.
+// All implementations must embed UnimplementedGrpcTestServiceServer
 // for forward compatibility
-type CalculatorServiceServer interface {
+type GrpcTestServiceServer interface {
 	Sum(context.Context, *calculator.CalculatorReq) (*calculator.CalculatorResp, error)
 	Multiply(context.Context, *calculator.CalculatorReq) (*calculator.CalculatorResp, error)
-	Counter(*counter.CounterReq, CalculatorService_CounterServer) error
-	Uploader(CalculatorService_UploaderServer) error
-	mustEmbedUnimplementedCalculatorServiceServer()
+	Counter(*counter.CounterReq, GrpcTestService_CounterServer) error
+	Uploader(GrpcTestService_UploaderServer) error
+	mustEmbedUnimplementedGrpcTestServiceServer()
 }
 
-// UnimplementedCalculatorServiceServer must be embedded to have forward compatible implementations.
-type UnimplementedCalculatorServiceServer struct {
+// UnimplementedGrpcTestServiceServer must be embedded to have forward compatible implementations.
+type UnimplementedGrpcTestServiceServer struct {
 }
 
-func (UnimplementedCalculatorServiceServer) Sum(context.Context, *calculator.CalculatorReq) (*calculator.CalculatorResp, error) {
+func (UnimplementedGrpcTestServiceServer) Sum(context.Context, *calculator.CalculatorReq) (*calculator.CalculatorResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Sum not implemented")
 }
-func (UnimplementedCalculatorServiceServer) Multiply(context.Context, *calculator.CalculatorReq) (*calculator.CalculatorResp, error) {
+func (UnimplementedGrpcTestServiceServer) Multiply(context.Context, *calculator.CalculatorReq) (*calculator.CalculatorResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Multiply not implemented")
 }
-func (UnimplementedCalculatorServiceServer) Counter(*counter.CounterReq, CalculatorService_CounterServer) error {
+func (UnimplementedGrpcTestServiceServer) Counter(*counter.CounterReq, GrpcTestService_CounterServer) error {
 	return status.Errorf(codes.Unimplemented, "method Counter not implemented")
 }
-func (UnimplementedCalculatorServiceServer) Uploader(CalculatorService_UploaderServer) error {
+func (UnimplementedGrpcTestServiceServer) Uploader(GrpcTestService_UploaderServer) error {
 	return status.Errorf(codes.Unimplemented, "method Uploader not implemented")
 }
-func (UnimplementedCalculatorServiceServer) mustEmbedUnimplementedCalculatorServiceServer() {}
+func (UnimplementedGrpcTestServiceServer) mustEmbedUnimplementedGrpcTestServiceServer() {}
 
-// UnsafeCalculatorServiceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to CalculatorServiceServer will
+// UnsafeGrpcTestServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to GrpcTestServiceServer will
 // result in compilation errors.
-type UnsafeCalculatorServiceServer interface {
-	mustEmbedUnimplementedCalculatorServiceServer()
+type UnsafeGrpcTestServiceServer interface {
+	mustEmbedUnimplementedGrpcTestServiceServer()
 }
 
-func RegisterCalculatorServiceServer(s grpc.ServiceRegistrar, srv CalculatorServiceServer) {
-	s.RegisterService(&CalculatorService_ServiceDesc, srv)
+func RegisterGrpcTestServiceServer(s grpc.ServiceRegistrar, srv GrpcTestServiceServer) {
+	s.RegisterService(&GrpcTestService_ServiceDesc, srv)
 }
 
-func _CalculatorService_Sum_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _GrpcTestService_Sum_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(calculator.CalculatorReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(CalculatorServiceServer).Sum(ctx, in)
+		return srv.(GrpcTestServiceServer).Sum(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/grpc.CalculatorService/Sum",
+		FullMethod: "/grpc.GrpcTestService/Sum",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CalculatorServiceServer).Sum(ctx, req.(*calculator.CalculatorReq))
+		return srv.(GrpcTestServiceServer).Sum(ctx, req.(*calculator.CalculatorReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _CalculatorService_Multiply_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _GrpcTestService_Multiply_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(calculator.CalculatorReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(CalculatorServiceServer).Multiply(ctx, in)
+		return srv.(GrpcTestServiceServer).Multiply(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/grpc.CalculatorService/Multiply",
+		FullMethod: "/grpc.GrpcTestService/Multiply",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CalculatorServiceServer).Multiply(ctx, req.(*calculator.CalculatorReq))
+		return srv.(GrpcTestServiceServer).Multiply(ctx, req.(*calculator.CalculatorReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _CalculatorService_Counter_Handler(srv interface{}, stream grpc.ServerStream) error {
+func _GrpcTestService_Counter_Handler(srv interface{}, stream grpc.ServerStream) error {
 	m := new(counter.CounterReq)
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
-	return srv.(CalculatorServiceServer).Counter(m, &calculatorServiceCounterServer{stream})
+	return srv.(GrpcTestServiceServer).Counter(m, &grpcTestServiceCounterServer{stream})
 }
 
-type CalculatorService_CounterServer interface {
+type GrpcTestService_CounterServer interface {
 	Send(*counter.CounterResp) error
 	grpc.ServerStream
 }
 
-type calculatorServiceCounterServer struct {
+type grpcTestServiceCounterServer struct {
 	grpc.ServerStream
 }
 
-func (x *calculatorServiceCounterServer) Send(m *counter.CounterResp) error {
+func (x *grpcTestServiceCounterServer) Send(m *counter.CounterResp) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-func _CalculatorService_Uploader_Handler(srv interface{}, stream grpc.ServerStream) error {
-	return srv.(CalculatorServiceServer).Uploader(&calculatorServiceUploaderServer{stream})
+func _GrpcTestService_Uploader_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(GrpcTestServiceServer).Uploader(&grpcTestServiceUploaderServer{stream})
 }
 
-type CalculatorService_UploaderServer interface {
+type GrpcTestService_UploaderServer interface {
 	SendAndClose(*uploader.UploaderResp) error
 	Recv() (*uploader.UploaderReq, error)
 	grpc.ServerStream
 }
 
-type calculatorServiceUploaderServer struct {
+type grpcTestServiceUploaderServer struct {
 	grpc.ServerStream
 }
 
-func (x *calculatorServiceUploaderServer) SendAndClose(m *uploader.UploaderResp) error {
+func (x *grpcTestServiceUploaderServer) SendAndClose(m *uploader.UploaderResp) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-func (x *calculatorServiceUploaderServer) Recv() (*uploader.UploaderReq, error) {
+func (x *grpcTestServiceUploaderServer) Recv() (*uploader.UploaderReq, error) {
 	m := new(uploader.UploaderReq)
 	if err := x.ServerStream.RecvMsg(m); err != nil {
 		return nil, err
@@ -242,31 +242,31 @@ func (x *calculatorServiceUploaderServer) Recv() (*uploader.UploaderReq, error) 
 	return m, nil
 }
 
-// CalculatorService_ServiceDesc is the grpc.ServiceDesc for CalculatorService service.
+// GrpcTestService_ServiceDesc is the grpc.ServiceDesc for GrpcTestService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var CalculatorService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "grpc.CalculatorService",
-	HandlerType: (*CalculatorServiceServer)(nil),
+var GrpcTestService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "grpc.GrpcTestService",
+	HandlerType: (*GrpcTestServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "Sum",
-			Handler:    _CalculatorService_Sum_Handler,
+			Handler:    _GrpcTestService_Sum_Handler,
 		},
 		{
 			MethodName: "Multiply",
-			Handler:    _CalculatorService_Multiply_Handler,
+			Handler:    _GrpcTestService_Multiply_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
 		{
 			StreamName:    "Counter",
-			Handler:       _CalculatorService_Counter_Handler,
+			Handler:       _GrpcTestService_Counter_Handler,
 			ServerStreams: true,
 		},
 		{
 			StreamName:    "Uploader",
-			Handler:       _CalculatorService_Uploader_Handler,
+			Handler:       _GrpcTestService_Uploader_Handler,
 			ClientStreams: true,
 		},
 	},
